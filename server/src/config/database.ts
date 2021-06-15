@@ -1,0 +1,13 @@
+import mongoose from 'mongoose';
+import { environment } from '.';
+
+export const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(environment.database, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
