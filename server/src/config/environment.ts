@@ -6,4 +6,6 @@ export const environment = {
   database: process.env.DATABASE || '',
 
   stripeApiKey: process.env.STRIPE_API_KEY || '',
+
+  appSecretKey: process.env.APP_SECRET_KEY || ''
 };
