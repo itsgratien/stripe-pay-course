@@ -6,6 +6,8 @@ export const connectToDatabase = async () => {
     await mongoose.connect(environment.database, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
     });
   } catch (error) {
     throw error;
