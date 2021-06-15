@@ -38,6 +38,18 @@ class UserController {
         .json({ message: 'Unable to login due to internal server error' });
     }
   };
+
+  getProfile = (req: Request, res: Response) => {
+    try {
+      return res.json({ data: req.currentUser });
+    } catch (error) {
+      return res
+        .status(StatusCode.ServerError)
+        .json({
+          message: 'Unable to get profile due to internal server error',
+        });
+    }
+  };
 }
 
 const userController = new UserController();
