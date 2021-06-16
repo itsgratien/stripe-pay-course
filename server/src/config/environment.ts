@@ -7,5 +7,7 @@ export const environment = {
 
   stripeApiKey: process.env.STRIPE_API_KEY || '',
 
-  appSecretKey: process.env.APP_SECRET_KEY || ''
+  stripePublicKey: process.env.STRIPE_PUBLIC_KEY || '',
+
+  appSecretKey: process.env.APP_SECRET_KEY || '',
 };
