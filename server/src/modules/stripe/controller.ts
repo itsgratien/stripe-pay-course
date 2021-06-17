@@ -13,11 +13,31 @@ class StripeController {
   createProductOnStripe = async (value: StripeType.ProductCreateParams) => {
     const newProduct = await this.stripe.products.create(value);
 
-    const newPrice = await this.stripe.prices.create({
-      product: newProduct.id,
-      unit_amount: 1000,
-      currency: 'USD',
-    });
+    return newProduct;
+  };
+
+  getProductDetail = async (value: string) => {
+    const findProduct = await this.stripe.products.retrieve(value);
+
+    return findProduct;
+  };
+
+  convertUnitAmount = (value: number) => {
+    const convert = Math.ceil(value * 100);
+
+    return convert;
+  };
+
+  createPriceOnStripe = async (value: StripeType.PriceCreateParams) => {
+    const newPrice = await this.stripe.prices.create(value);
+
+    return newPrice;
+  };
+
+  getPriceDetail = async (value: string) => {
+    const findPrice = await this.stripe.prices.retrieve(value);
+
+    return findPrice;
   };
 }
 

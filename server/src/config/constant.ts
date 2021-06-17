@@ -6,4 +6,5 @@ export enum StatusCode {
   Conflict = 409,
   Unauthorized = 401,
   Forbidden = 403,
+  NotFound = 404
 }
