@@ -3,8 +3,16 @@
   border: 1px solid #211e1e;
   padding: 50px;
   margin-top: 25px;
+  .formError{
+    padding-left: 27px;
+  }
   .inputGroup {
     flex-wrap: wrap;
+  }
+  .cardNumber {
+    border: 1px solid #413d3d;
+    border-radius: 10px;
+    padding-left: 25px;
   }
   .inputButton {
     margin: 10px 0 10px 30px;

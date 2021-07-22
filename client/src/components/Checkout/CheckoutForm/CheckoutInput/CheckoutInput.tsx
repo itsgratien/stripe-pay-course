@@ -19,6 +19,7 @@ const CheckoutInput = (props: Props) => {
         value={value}
         onChange={onChange}
         name={name}
+        required
       />
     </div>
   );

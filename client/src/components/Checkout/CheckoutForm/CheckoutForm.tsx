@@ -1,5 +1,6 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { StripeCardElementChangeEvent } from '@stripe/stripe-js';
 import './CheckoutForm.scss';
 import { CheckoutInput } from './CheckoutInput';
 
@@ -10,7 +11,9 @@ interface Props {
 const CheckoutForm = (props: Props) => {
   const [cardHolderName, setCardHolderName] = useState<string>('');
 
-  const [cardNumber, setCardNumber] = useState<string>('');
+  const [cardError, setCardError] = useState<string>();
+
+  const [cardComplete, setCardComplete] = useState<boolean>(false);
 
   const [address, setAddress] = useState<string>('');
 
@@ -23,15 +26,70 @@ const CheckoutForm = (props: Props) => {
   const handleCardHolder = (e: ChangeEvent<HTMLInputElement>) =>
     setCardHolderName(e.target.value);
 
-  const handleCardNumber = (e: ChangeEvent<HTMLInputElement>) =>
-    setCardNumber(e.target.value);
+  const handleCardNumber = (e: StripeCardElementChangeEvent) => {
+    if (e.error) {
+      setCardError(e.error.message);
+    }
+
+    if (e.complete) {
+      setCardComplete(e.complete);
+
+      setCardError(undefined);
+    }
+
+    return undefined;
+  };
 
   const handleAddress = (e: ChangeEvent<HTMLInputElement>) =>
     setAddress(e.target.value);
 
+  const handleChargeUser = (id: string) => {
+    alert(id);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!stripe || !element) {
+      return undefined;
+    }
+
+    const cardElement = element.getElement(CardElement);
+
+    if (!cardElement) {
+      return;
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        name: cardHolderName,
+        address: {
+          city: address,
+        },
+      },
+    });
+
+    if (error) {
+      setCardError(error.message || 'something went wrong');
+    }
+
+    if (paymentMethod && cardComplete) {
+      handleChargeUser(paymentMethod.id);
+    }
+
+    return;
+  };
+
   return (
     <div className='checkoutForm relative w-full'>
-      <form autoComplete='off'>
+      <form autoComplete='off' onSubmit={handleSubmit}>
+        {cardError && (
+          <div className='formError'>
+            <span className='text-red-600 font-bold'>{cardError}</span>
+          </div>
+        )}
         <div className='flex inputGroup'>
           <CheckoutInput
             placeholder='card holder name'
@@ -40,20 +98,39 @@ const CheckoutForm = (props: Props) => {
             onChange={handleCardHolder}
           />
           <CheckoutInput
-            placeholder='address'
+            placeholder='country - city or location'
             name='address'
             value={address}
             onChange={handleAddress}
           />
-          <CheckoutInput
-            placeholder='card number'
-            name='cardNumber'
-            value={cardNumber}
-            onChange={handleCardNumber}
-          />
+          <div className='checkoutInput cardNumber'>
+            <CardElement
+              options={{
+                iconStyle: 'solid',
+                style: {
+                  base: {
+                    iconColor: '#ffffff',
+                    backgroundColor: 'none',
+                    fontFamily: 'Quicksand, sans-serif',
+                    fontSize: '14px',
+                    color: '#ffffff',
+                    '::placeholder': {
+                      color: '#413D3D',
+                    },
+                    lineHeight: '40px',
+                  },
+                },
+              }}
+              onChange={handleCardNumber}
+            />
+          </div>
         </div>
         <div className='inputButton'>
-          <button type='button' className='text-white text-center'>
+          <button
+            type='submit'
+            className='text-white text-center'
+            disabled={!stripe}
+          >
             Pay
           </button>
         </div>
