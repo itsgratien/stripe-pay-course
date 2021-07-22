@@ -4,7 +4,7 @@ import { Footer } from '.';
 
 const Layout: FC = (props) => {
   return (
-    <div className='appLayout'>
+    <div className='layout relative'>
       <div className='children'>{props.children}</div>
       <Footer />
     </div>
