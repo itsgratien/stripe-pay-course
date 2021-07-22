@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home } from './components/Home';
+import { Checkout } from './components/Checkout';
 import { PageNotFound } from './components/PageNotFound';
 import { RouteConfig } from './utils';
 
@@ -10,6 +11,10 @@ const App = () => {
     {
       component: <Home />,
       path: RouteConfig.Home,
+    },
+    {
+      component: <Checkout />,
+      path: RouteConfig.Checkout,
     },
   ];
   return (

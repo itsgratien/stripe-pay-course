@@ -1,0 +1,20 @@
+.checkoutForm {
+  border-radius: 20px;
+  border: 1px solid #211e1e;
+  padding: 50px;
+  margin-top: 25px;
+  .inputGroup {
+    flex-wrap: wrap;
+  }
+  .inputButton {
+    margin: 10px 0 10px 30px;
+    button {
+      background: #ff431a;
+      width: 105px;
+      height: 46px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+  }
+}

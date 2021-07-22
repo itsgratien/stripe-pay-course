@@ -1,11 +1,17 @@
 import React from 'react';
 import './ProductItem.scss';
+import { useHistory } from 'react-router-dom';
 
 interface Props {}
 
 const ProductItem = (props: Props) => {
+  const history = useHistory();
+
   return (
-    <div className='productItem relative cursor-pointer'>
+    <div
+      className='productItem relative cursor-pointer'
+      onClick={() => history.push('/product/354')}
+    >
       <div className='image'>
         <img
           src='https://i.ytimg.com/vi/hdI2bqOjy3c/maxresdefault.jpg'
