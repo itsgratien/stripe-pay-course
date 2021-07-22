@@ -16,14 +16,8 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     stripe: {
-      productId: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: String,
-        required: true,
-      },
+      type: Object,
+      required: false,
     },
   },
   { timestamps: true }

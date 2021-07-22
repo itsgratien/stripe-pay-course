@@ -4,7 +4,7 @@ export interface ProductModel extends Document {
   name: string;
   image: string;
   price: string;
-  stripe: {
+  stripe?: {
     price: string;
     productId: string;
   };

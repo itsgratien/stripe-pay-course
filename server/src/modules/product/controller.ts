@@ -48,11 +48,7 @@ class ProductController {
           .json({ message: 'product not found' });
       }
 
-      const findProductOnStripe = await stripeController.getProductDetail(
-        findProduct.stripe.productId
-      );
-
-      return res.json({ data: findProductOnStripe });
+      return res.json({ data: findProduct });
     } catch (error) {
       return res
         .status(StatusCode.ServerError)
