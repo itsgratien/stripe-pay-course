@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import './CheckoutForm.scss';
 import { CheckoutInput } from './CheckoutInput';
 
@@ -12,8 +13,12 @@ const CheckoutForm = (props: Props) => {
   const [cardNumber, setCardNumber] = useState<string>('');
 
   const [address, setAddress] = useState<string>('');
-  
+
   const { productId } = props;
+
+  const stripe = useStripe();
+
+  const element = useElements();
 
   const handleCardHolder = (e: ChangeEvent<HTMLInputElement>) =>
     setCardHolderName(e.target.value);
@@ -47,8 +52,10 @@ const CheckoutForm = (props: Props) => {
             onChange={handleCardNumber}
           />
         </div>
-        <div className="inputButton">
-          <button type='button' className="text-white text-center">submit</button>
+        <div className='inputButton'>
+          <button type='button' className='text-white text-center'>
+            Pay
+          </button>
         </div>
       </form>
     </div>
