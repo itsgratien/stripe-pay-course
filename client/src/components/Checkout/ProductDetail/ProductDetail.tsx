@@ -18,8 +18,8 @@ const ProductDetail = (props: Props) => {
         </Suspense>
       </div>
       <div className='detail flex flex-col'>
-        <span className='text-white font-bold'>Javascript for beginner's</span>
-        <span className='text-white font-normal'>$ 150</span>
+        <span className='text-white font-bold'>{product.name}</span>
+        <span className='text-white font-normal'>$ {product.price}</span>
       </div>
     </div>
   );
