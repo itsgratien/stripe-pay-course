@@ -2,7 +2,9 @@ import React, { useState, ChangeEvent } from 'react';
 import './CheckoutForm.scss';
 import { CheckoutInput } from './CheckoutInput';
 
-interface Props {}
+interface Props {
+  productId: string;
+}
 
 const CheckoutForm = (props: Props) => {
   const [cardHolderName, setCardHolderName] = useState<string>('');
@@ -10,6 +12,8 @@ const CheckoutForm = (props: Props) => {
   const [cardNumber, setCardNumber] = useState<string>('');
 
   const [address, setAddress] = useState<string>('');
+  
+  const { productId } = props;
 
   const handleCardHolder = (e: ChangeEvent<HTMLInputElement>) =>
     setCardHolderName(e.target.value);

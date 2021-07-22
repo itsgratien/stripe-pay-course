@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './ProductItem.scss';
 import { useHistory } from 'react-router-dom';
+import { ProductType } from '..';
+import { ImageLoading } from '../../ImageLoading';
 
-interface Props {}
+interface Props {
+  product: ProductType;
+}
 
 const ProductItem = (props: Props) => {
+  const { product } = props;
+
   const history = useHistory();
 
   return (
     <div
       className='productItem relative cursor-pointer'
-      onClick={() => history.push('/product/354')}
+      onClick={() => history.push(`/product/${product._id}`)}
     >
       <div className='image'>
-        <img
-          src='https://i.ytimg.com/vi/hdI2bqOjy3c/maxresdefault.jpg'
-          alt=''
-        />
+        <Suspense fallback={<></>}>
+          <ImageLoading src={product.image} />
+        </Suspense>
       </div>
       <div className='detail flex flex-col'>
-        <span className='font-bold text-white'>Javascript for beginner</span>
-        <span className='text-white mt-3'>$ 150</span>
+        <span className='font-bold text-white'>{product.name}</span>
+        <span className='text-white mt-3'>$ {product.price}</span>
       </div>
     </div>
   );

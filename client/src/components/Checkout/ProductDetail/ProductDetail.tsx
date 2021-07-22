@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './ProductDetail.scss';
+import { ProductType } from '../../Home';
+import { ImageLoading } from '../../ImageLoading';
 
-interface Props {}
+interface Props {
+  product: ProductType;
+}
 
 const ProductDetail = (props: Props) => {
+  const { product } = props;
+
   return (
     <div className='relative productDetail w-full'>
       <div className='productImage w-full relative'>
-        <img
-          src='https://i.ytimg.com/vi/hdI2bqOjy3c/maxresdefault.jpg'
-          alt=''
-          className="object-cover"
-        />
+        <Suspense fallback={<></>}>
+          <ImageLoading src={product.image} />
+        </Suspense>
       </div>
-      <div className="detail flex flex-col">
-          <span className="text-white font-bold">Javascript for beginner's</span>
-          <span className="text-white font-normal">$ 150</span>
+      <div className='detail flex flex-col'>
+        <span className='text-white font-bold'>Javascript for beginner's</span>
+        <span className='text-white font-normal'>$ 150</span>
       </div>
     </div>
   );
