@@ -2,7 +2,7 @@
 # PayCourse
 A min web app which guides to setup stripe API & allows the user to pay products (course).
 
-![Home Screen](https://raw.githubusercontent.com/itsgratien/my-book-stripe/main/client/public/images/home-screen.png?token=AGRQKGCJKSRZIN3YR2RXBWTA7K4JW)
+![HomeScreen](https://raw.githubusercontent.com/itsgratien/stripe-pay-course/main/client/public/images/home-screen.png?token=AGRQKGENEJQWZ3AUEW7MYVLA7K5JG)
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ A min web app which guides to setup stripe API & allows the user to pay products
   
 ## Quick Demo
 
-![Gif](https://raw.githubusercontent.com/itsgratien/my-book-stripe/main/client/public/images/PayCourse.gif?token=AGRQKGGPSH6DJ5GZN4FTGBDA7K3WC)
+![paycourse.gif](https://github.com/itsgratien/stripe-pay-course/blob/main/client/public/images/paycourse.gif?raw=true)
 
   
 ## Authors

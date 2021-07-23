@@ -14,10 +14,10 @@ const Footer = () => {
         <a href='https://github.com/itsgratien' target='_blank' rel="noreferrer">
           <LogoGithub color="white" />
         </a>
-        <a href='https://github.com/itsgratien' target='_blank' rel="noreferrer">
+        <a href='https://twitter.com/itsgratien' target='_blank' rel="noreferrer">
           <LogoTwitter color="white" />
         </a>
-        <a href='https://github.com/itsgratien' target='_blank' rel="noreferrer">
+        <a href='https://www.instagram.com/itsgratien/' target='_blank' rel="noreferrer">
           <LogoInstagram color="white" />
         </a>
       </div>
