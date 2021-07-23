@@ -1,11 +1,14 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import './CheckoutForm.scss';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { StripeCardElementChangeEvent } from '@stripe/stripe-js';
-import './CheckoutForm.scss';
+import { BeatLoader } from 'react-spinners';
 import { CheckoutInput } from './CheckoutInput';
+import { axios, ApiEndPoint } from '../../../utils';
 
 interface Props {
   productId: string;
+  handleSuccessPayment: (value: string) => void;
 }
 
 const CheckoutForm = (props: Props) => {
@@ -17,7 +20,9 @@ const CheckoutForm = (props: Props) => {
 
   const [address, setAddress] = useState<string>('');
 
-  const { productId } = props;
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const { productId, handleSuccessPayment } = props;
 
   const stripe = useStripe();
 
@@ -43,8 +48,31 @@ const CheckoutForm = (props: Props) => {
   const handleAddress = (e: ChangeEvent<HTMLInputElement>) =>
     setAddress(e.target.value);
 
-  const handleChargeUser = (id: string) => {
-    alert(id);
+  const handleChargeUser = (
+    paymentMethodId: string,
+    billingDetail: { name: string; address: string }
+  ) => {
+    return axios(
+      {
+        method: 'POST',
+        url: ApiEndPoint.PayProduct(productId),
+        data: {
+          address: billingDetail.address,
+          name: billingDetail.name,
+          paymentMethodId,
+        },
+      },
+      (res) => {
+        setLoading(false);
+
+        handleSuccessPayment(res.message || 'Payment was done successfully');
+      },
+      (e) => {
+        setLoading(false);
+
+        setCardError(e.data.message || 'Internal server error, try again');
+      }
+    );
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,6 +88,9 @@ const CheckoutForm = (props: Props) => {
       return;
     }
 
+    // show loading on pay button
+    setLoading(true);
+
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: cardElement,
@@ -73,10 +104,15 @@ const CheckoutForm = (props: Props) => {
 
     if (error) {
       setCardError(error.message || 'something went wrong');
+
+      setLoading(false);
     }
 
     if (paymentMethod && cardComplete) {
-      handleChargeUser(paymentMethod.id);
+      handleChargeUser(paymentMethod.id, {
+        name: String(paymentMethod.billing_details.name),
+        address: String(paymentMethod.billing_details.address?.city),
+      });
     }
 
     return;
@@ -129,9 +165,9 @@ const CheckoutForm = (props: Props) => {
           <button
             type='submit'
             className='text-white text-center'
-            disabled={!stripe}
+            disabled={!stripe || loading}
           >
-            Pay
+            {loading ? <BeatLoader color='white' size={10} /> : 'Pay'}
           </button>
         </div>
       </form>

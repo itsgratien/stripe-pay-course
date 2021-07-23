@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { StatusCode, environment } from '../../config';
+import { StatusCode } from '../../config';
 import { productModel } from '../../database';
 import { stripeController } from '../stripe/controller';
 class ProductController {
@@ -65,6 +65,42 @@ class ProductController {
       return res
         .status(StatusCode.ServerError)
         .json({ message: 'Unable to fetch product due internal server error' });
+    }
+  };
+
+  payProduct = async (req: Request, res: Response) => {
+    try {
+      const { productId } = req.params;
+
+      const checkProduct = await productModel.findById(productId);
+
+      if (!checkProduct) {
+        return res
+          .status(StatusCode.NotFound)
+          .json({ message: 'Product not found' });
+      }
+      const amount = stripeController.convertUnitAmount(
+        Number(checkProduct.price)
+      );
+
+      await stripeController.createPaymentIntent({
+        amount,
+        confirm: true,
+        metadata: {
+          address: req.body.address,
+          name: req.body.name,
+        },
+        currency: 'usd',
+        payment_method: req.body.paymentMethodId,
+      });
+
+      return res
+        .status(StatusCode.Created)
+        .json({ message: 'Payment was done successfully' });
+    } catch (error) {
+      return res
+        .status(StatusCode.ServerError)
+        .json({ message: 'Unable to pay product due internal server error' });
     }
   };
 }

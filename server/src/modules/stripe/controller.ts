@@ -39,6 +39,18 @@ class StripeController {
 
     return findPrice;
   };
+
+  createCharge = async (value: StripeType.ChargeCreateParams) => {
+    const add = await this.stripe.charges.create({ ...value, currency: 'usd' });
+
+    return add;
+  };
+
+  createPaymentIntent = async (value: StripeType.PaymentIntentCreateParams) => {
+    const add = await this.stripe.paymentIntents.create(value);
+
+    return add;
+  };
 }
 
 const stripeController = new StripeController();

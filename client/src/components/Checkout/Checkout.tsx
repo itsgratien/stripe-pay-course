@@ -10,11 +10,16 @@ import { ProductDetail } from './ProductDetail';
 import { CheckoutForm } from './CheckoutForm';
 import { axios, ApiEndPoint, environment } from '../../utils';
 import { ProductType } from '../Home';
+import { PaymentSuccess } from './PaymentSuccess';
 
 const Checkout = () => {
   const [product, setProduct] = useState<ProductType>();
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [successMessage, setSuccessMessage] = useState<string>();
+
+  const [paidAmount, setPaidAmount] = useState<string>();
 
   const params = useParams<{ id: string }>();
 
@@ -35,6 +40,14 @@ const Checkout = () => {
         setLoading(false);
       }
     );
+  };
+
+  const handleSuccessPayment = (value: { message: string; amount: string }) => {
+    setSuccessMessage(value.message);
+
+    setPaidAmount(value.amount);
+
+    return undefined;
   };
 
   useEffect(() => {
@@ -71,10 +84,22 @@ const Checkout = () => {
         )}
         {!loading && product && (
           <>
-            <ProductDetail product={product} />
-            <Elements stripe={stripePromise}>
-              <CheckoutForm productId={product._id} />
-            </Elements>
+            {successMessage && paidAmount && (
+              <PaymentSuccess message={successMessage} amount={paidAmount} />
+            )}
+            {!successMessage && (
+              <>
+                <ProductDetail product={product} />
+                <Elements stripe={stripePromise}>
+                  <CheckoutForm
+                    productId={product._id}
+                    handleSuccessPayment={(message) =>
+                      handleSuccessPayment({ message, amount: product.price })
+                    }
+                  />
+                </Elements>
+              </>
+            )}
           </>
         )}
       </div>
